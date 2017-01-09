@@ -59,9 +59,6 @@ def connect(addr):
 
 @route('/event/<name>/<arg>/')
 def event(name, arg):
-    if SOCK is None:
-        return 'not connected'
-
     cmd = 'R'
 
     if name in ['updown', 'leftright']:
@@ -69,8 +66,12 @@ def event(name, arg):
         char = ('W' if arg > 0 else 'S') if name == 'updown' else ('D' if arg > 0 else 'A')
         cmd += abs(int(arg / 0.2)) * char
 
-    SOCK.send(cmd)
-    return 'command: {}'.format(cmd)
+    if SOCK is None:
+        print(cmd)
+        return 'command: {}, not connected'.format(cmd)
+    else:
+        SOCK.send(cmd)
+        return 'command: {}'.format(cmd)
 
 
 run(host='0.0.0.0', port=8080, reloader=False, debug=False)
