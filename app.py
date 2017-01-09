@@ -62,12 +62,20 @@ def connect(addr):
 
 @route('/event/<name>/<arg>/')
 def event(name, arg):
-    cmd = 'R'
+    cmd = ''
+
+    f = {
+        'f1': 'R',
+        'f2': 'Y',
+        'f3': 'Z'
+    }
 
     if name in ['updown', 'leftright']:
-        arg = float(arg) * 2 - 1
-        char = ('W' if arg > 0 else 'S') if name == 'updown' else ('D' if arg > 0 else 'A')
-        cmd += abs(int(arg / 0.2)) * char
+        tag = 'W' if name == 'updown' else 'A'
+        value = float(arg) * 20 - 10 if name == 'updown' else float(arg) * 40 - 20
+        cmd = '{}{}'.format(tag, value)
+    else:
+        cmd = f[name]
 
     msg = 'command: {}, {}'
 
@@ -78,8 +86,7 @@ def event(name, arg):
     else:
         msg = msg.format(cmd, 'connected')
         print(msg)
-        for c in cmd:
-            SOCK.send(c)
+        SOCK.send(cmd + '\n')
         return msg
 
 
