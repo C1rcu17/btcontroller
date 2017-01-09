@@ -36,6 +36,8 @@ def console():
 
 @route('/connect/<addr>/')
 def connect(addr):
+    global SOCK
+
     response.content_type = 'application/json'
 
     info = {}
@@ -54,6 +56,7 @@ def connect(addr):
     else:
         info['connected'] = True
 
+    print(info)
     return dumps(info)
 
 
@@ -66,12 +69,18 @@ def event(name, arg):
         char = ('W' if arg > 0 else 'S') if name == 'updown' else ('D' if arg > 0 else 'A')
         cmd += abs(int(arg / 0.2)) * char
 
+    msg = 'command: {}, {}'
+
     if SOCK is None:
-        print(cmd)
-        return 'command: {}, not connected'.format(cmd)
+        msg = msg.format(cmd, 'not connected')
+        print(msg)
+        return msg
     else:
-        SOCK.send(cmd)
-        return 'command: {}'.format(cmd)
+        msg = msg.format(cmd, 'connected')
+        print(msg)
+        for c in cmd:
+            SOCK.send(c)
+        return msg
 
 
 run(host='0.0.0.0', port=8080, reloader=False, debug=False)
