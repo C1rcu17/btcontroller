@@ -14,6 +14,8 @@
 
     .absolute {
       position: absolute;
+      cursor: pointer;
+      cursor: hand;
     }
 
     .center-text {
@@ -28,6 +30,7 @@
 
     #updown    { left: 15px; top: 30px; bottom: 30px; width: 50px; }
     #leftright { left: calc(100% - 250px); top: calc(100% - 172px); right: 15px; bottom: 30px; height: 50px; }
+    #connect   { left: calc(100% - 250px); top: calc(100% - 102px); right: 15px; bottom: 30px; height: 35px; }
     #f1        { left: 150px; top: 30px; width: 50px; height: 50px; }
     #f2        { left: 220px; top: 30px; width: 50px; height: 50px; }
     #f3        { left: 290px; top: 30px; width: 50px; height: 50px; }
@@ -51,6 +54,8 @@
       });
     };
 
+
+
     $(function() {
       onTap($('#f1').get(0), function(e) {
         sendEvent('f1', 0);
@@ -62,6 +67,12 @@
 
       onTap($('#f3').get(0), function(e) {
         sendEvent('f3', 0);
+      });
+
+      $('#connectBt').on('click', function(e) {
+        $.get('/connect/' + $('#addr').val() + '/', function(data) {
+          console.log(data);
+        });
       });
     });
 
@@ -126,3 +137,7 @@
 
 <div id="updown" class="absolute gauge"></div>
 <div id="leftright" class="absolute gauge"></div>
+<div id="connect" class="absolute">
+  <input id="addr" style="width: 60%; height: 100%" type="text" value="98:D3:31:40:22:FF">
+  <button id="connectBt" style="width: 36%; height: 100%">Connect</button>
+</div>
