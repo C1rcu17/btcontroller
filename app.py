@@ -86,6 +86,8 @@ def event(name, arg):
         cmd = '{}{}'.format(tag, '{}'.format(value))
     elif name in pidVars:
         cmd = pidVars[name] + ('5' if arg == '+' else '6')
+    elif name == 'agr':
+        cmd = 'X' + ('5' if arg == 'on' else '6')
     else:
         print(name, arg)
 
@@ -107,10 +109,16 @@ def discover():
 
     devices = 'Found devices:\n'
 
-    for daddr, dname in discover_devices(lookup_names=True):
-        devices += '  {}: {}\n'.format(daddr, dname)
+    try:
+        found = discover_devices(lookup_names=True)
+    except OSError:
+        continue
 
-    CONSOLE += devices
+    if isinstance(found, dict):
+        for daddr, dname in found:
+            devices += '  {}: {}\n'.format(daddr, dname)
+
+        CONSOLE += devices
 
 
 def read_console():
@@ -127,7 +135,7 @@ def read_console():
             except:
                 continue
             else:
-                CONSOLE += pkt
+                CONSOLE += pkt.decode('utf-8')
 
 
 Thread(target=discover, daemon=True).start()
