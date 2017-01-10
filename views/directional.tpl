@@ -12,6 +12,17 @@
       border: solid 1px #000000;
     }
 
+    .toggle {
+      color: #000000;
+      background-color: #55FF55;
+      border: solid 1px #000000;
+    }
+
+    .toggle.toggle-on {
+      color: #FFFFFF;
+      background-color: #FF5555;
+    }
+
     .absolute {
       position: absolute;
       cursor: pointer;
@@ -31,9 +42,15 @@
     #updown    { left: 15px; top: 30px; bottom: 30px; width: 50px; }
     #leftright { left: calc(100% - 250px); top: calc(100% - 172px); right: 15px; bottom: 30px; height: 50px; }
     #connect   { left: calc(100% - 250px); top: calc(100% - 102px); right: 15px; bottom: 30px; height: 35px; }
-    #f1        { left: 150px; top: 30px; width: 50px; height: 50px; }
-    #f2        { left: 220px; top: 30px; width: 50px; height: 50px; }
-    #f3        { left: 290px; top: 30px; width: 50px; height: 50px; }
+    #kpp        { left: 150px; top: 30px; width: 35px; height: 35px; }
+    #kip        { left: 200px; top: 30px; width: 35px; height: 35px; }
+    #kdp        { left: 250px; top: 30px; width: 35px; height: 35px; }
+    #spp        { left: 300px; top: 30px; width: 35px; height: 35px; }
+    #kpm        { left: 150px; top: 80px; width: 35px; height: 35px; }
+    #kim        { left: 200px; top: 80px; width: 35px; height: 35px; }
+    #kdm        { left: 250px; top: 80px; width: 35px; height: 35px; }
+    #spm        { left: 300px; top: 80px; width: 35px; height: 35px; }
+    #agr        { left: 350px; top: 30px; width: 45px; height: 85px; }
 
   </style>
 %end
@@ -54,19 +71,49 @@
       });
     };
 
-
-
     $(function() {
-      onTap($('#f1').get(0), function(e) {
-        sendEvent('f1', 0);
+      onTap($('#kpp').get(0), function(e) {
+        sendEvent('kp', '+');
       });
 
-      onTap($('#f2').get(0), function(e) {
-        sendEvent('f2', 0);
+      onTap($('#kip').get(0), function(e) {
+        sendEvent('ki', '+');
       });
 
-      onTap($('#f3').get(0), function(e) {
-        sendEvent('f3', 0);
+      onTap($('#kdp').get(0), function(e) {
+        sendEvent('kd', '+');
+      });
+
+      onTap($('#spp').get(0), function(e) {
+        sendEvent('sp', '+');
+      });
+
+      onTap($('#kpm').get(0), function(e) {
+        sendEvent('kp', '-');
+      });
+
+      onTap($('#kim').get(0), function(e) {
+        sendEvent('ki', '-');
+      });
+
+      onTap($('#kdm').get(0), function(e) {
+        sendEvent('kd', '-');
+      });
+
+      onTap($('#spm').get(0), function(e) {
+        sendEvent('sp', '-');
+      });
+
+      var agr = $('#agr');
+
+      onTap(agr.get(0), function(e) {
+        if(agr.hasClass('toggle-on')) {
+          agr.removeClass('toggle-on')
+          sendEvent('agr', 'off');
+        } else {
+          agr.addClass('toggle-on')
+          sendEvent('agr', 'on');
+        }
       });
 
       $('#connectBt').on('click', function(e) {
@@ -131,9 +178,15 @@
 
 %rebase('layouts/master.tpl', title='BT Controller')
 
-<div id="f1" class="absolute center-text bt"><span>F1</span></div>
-<div id="f2" class="absolute center-text bt"><span>F2</span></div>
-<div id="f3" class="absolute center-text bt"><span>F3</span></div>
+<div id="kpp" class="absolute center-text bt"><span>KP+</span></div>
+<div id="kip" class="absolute center-text bt"><span>KI+</span></div>
+<div id="kdp" class="absolute center-text bt"><span>KD+</span></div>
+<div id="spp" class="absolute center-text bt"><span>SP+</span></div>
+<div id="kpm" class="absolute center-text bt"><span>KP-</span></div>
+<div id="kim" class="absolute center-text bt"><span>KI-</span></div>
+<div id="kdm" class="absolute center-text bt"><span>KD-</span></div>
+<div id="spm" class="absolute center-text bt"><span>SP-</span></div>
+<div id="agr" class="absolute center-text toggle"><span>Agr</span></div>
 
 <div id="updown" class="absolute gauge"></div>
 <div id="leftright" class="absolute gauge"></div>

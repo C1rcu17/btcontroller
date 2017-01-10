@@ -64,12 +64,6 @@ def connect(addr):
 def event(name, arg):
     cmd = ''
 
-    f = {
-        'f1': 'R',
-        'f2': 'Y',
-        'f3': 'Z'
-    }
-
     if name in ['updown', 'leftright']:
         tag = 'W' if name == 'updown' else 'D'
         value = float(arg) * 10 - 5
@@ -86,7 +80,7 @@ def event(name, arg):
         value = int(value)
         cmd = '{}{}'.format(tag, '{}'.format(value))
     else:
-        cmd = f[name]
+        print(name, arg)
 
     msg = 'command: {}, {}'
 
@@ -101,4 +95,4 @@ def event(name, arg):
         return msg
 
 
-run(host='0.0.0.0', port=8080, reloader=False, debug=False)
+run(host='0.0.0.0', port=8080, reloader=False, debug=True)
