@@ -205,7 +205,7 @@
 <div id="leftright" class="absolute gauge cursor-hand"></div>
 
 <div id="connect" class="absolute">
-  <input id="addr" style="width: 60%; height: 100%" type="text" value="24:DF:6A:D7:9D:3B">
+  <input id="addr" style="width: 60%; height: 100%" type="text" value="98:D3:31:40:22:FF">
   <button id="connectBt" class="cursor-hand" style="width: 36%; height: 100%">Connect</button>
 </div>
 
