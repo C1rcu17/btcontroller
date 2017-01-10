@@ -1,5 +1,4 @@
 import os
-import select
 from time import sleep
 from threading import Thread
 from bottle import route, static_file, run, template, redirect
