@@ -64,6 +64,13 @@ def connect(addr):
 def event(name, arg):
     cmd = ''
 
+    pidVars = {
+        'kp': 'P',
+        'ki': 'I',
+        'kd': 'F',
+        'sp': 'T',
+    }
+
     if name in ['updown', 'leftright']:
         tag = 'W' if name == 'updown' else 'D'
         value = float(arg) * 10 - 5
@@ -79,6 +86,8 @@ def event(name, arg):
             value = -value
         value = int(value)
         cmd = '{}{}'.format(tag, '{}'.format(value))
+    elif name in pidVars:
+        cmd = pidVars[name] + ('5' if arg == '+' else '6')
     else:
         print(name, arg)
 

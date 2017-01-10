@@ -190,7 +190,10 @@
 
 <div id="updown" class="absolute gauge"></div>
 <div id="leftright" class="absolute gauge"></div>
+
 <div id="connect" class="absolute">
   <input id="addr" style="width: 60%; height: 100%" type="text" value="98:D3:31:40:22:FF">
   <button id="connectBt" style="width: 36%; height: 100%">Connect</button>
 </div>
+
+<textarea id="console"></textarea>
