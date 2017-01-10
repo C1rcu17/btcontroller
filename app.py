@@ -71,9 +71,20 @@ def event(name, arg):
     }
 
     if name in ['updown', 'leftright']:
-        tag = 'W' if name == 'updown' else 'A'
-        value = float(arg) * 20 - 10 if name == 'updown' else float(arg) * 40 - 20
-        cmd = '{}{}'.format(tag, value)
+        tag = 'W' if name == 'updown' else 'D'
+        value = float(arg) * 10 - 5
+        if value > 0:
+            value = value + 1
+        if value < 0:
+            value = value - 1
+        if name == 'updown' and value < 0:
+            tag = 'S'
+            value = -value
+        if name == 'leftright' and value < 0:
+            tag = 'A'
+            value = -value
+        value = int(value)
+        cmd = '{}{}'.format(tag, '{}'.format(value))
     else:
         cmd = f[name]
 
@@ -86,7 +97,7 @@ def event(name, arg):
     else:
         msg = msg.format(cmd, 'connected')
         print(msg)
-        SOCK.send(cmd + '\n')
+        SOCK.send(cmd)
         return msg
 
 
