@@ -112,9 +112,10 @@ def discover():
     try:
         found = discover_devices(lookup_names=True)
     except OSError:
-        continue
+        pass
 
-    if isinstance(found, dict):
+    print(found)
+    if isinstance(found, list):
         for daddr, dname in found:
             devices += '  {}: {}\n'.format(daddr, dname)
 
