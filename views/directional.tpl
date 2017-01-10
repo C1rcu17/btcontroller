@@ -42,15 +42,15 @@
       vertical-align: middle;
     }
 
-    #kpp        { left: 150px; top: 30px; width: 35px; height: 35px; }
-    #kip        { left: 200px; top: 30px; width: 35px; height: 35px; }
-    #kdp        { left: 250px; top: 30px; width: 35px; height: 35px; }
-    #spp        { left: 300px; top: 30px; width: 35px; height: 35px; }
-    #kpm        { left: 150px; top: 80px; width: 35px; height: 35px; }
-    #kim        { left: 200px; top: 80px; width: 35px; height: 35px; }
-    #kdm        { left: 250px; top: 80px; width: 35px; height: 35px; }
-    #spm        { left: 300px; top: 80px; width: 35px; height: 35px; }
-    #agr        { left: 350px; top: 30px; width: 45px; height: 85px; }
+    #kpp        { left: 100px; top: 30px; width: 35px; height: 35px; }
+    #kip        { left: 150px; top: 30px; width: 35px; height: 35px; }
+    #kdp        { left: 200px; top: 30px; width: 35px; height: 35px; }
+    #spp        { left: 250px; top: 30px; width: 35px; height: 35px; }
+    #kpm        { left: 100px; top: 80px; width: 35px; height: 35px; }
+    #kim        { left: 150px; top: 80px; width: 35px; height: 35px; }
+    #kdm        { left: 200px; top: 80px; width: 35px; height: 35px; }
+    #spm        { left: 250px; top: 80px; width: 35px; height: 35px; }
+    #agr        { left: 300px; top: 30px; width: 45px; height: 85px; }
 
     #updown    { left: 15px; top: 30px; bottom: 30px; width: 50px; }
     #leftright { left: calc(100% - 250px); top: calc(100% - 172px); right: 15px; height: 50px; }
