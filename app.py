@@ -91,14 +91,14 @@ def event(name, arg):
 
     msg = 'command: {}, {}'
 
-    if CONNECTED:
+    if not CONNECTED:
         msg = msg.format(cmd, 'not connected')
         print(msg)
         return msg
     else:
         msg = msg.format(cmd, 'connected')
         print(msg)
-        SOCK.send(cmd)
+        SOCK.sendall(cmd)
         return msg
 
 
