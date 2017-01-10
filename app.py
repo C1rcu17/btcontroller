@@ -1,12 +1,16 @@
 import os
-from bottle import route, static_file, run, template, redirect, response
-from json import dumps
+import select
+from time import sleep
+from threading import Thread
+from bottle import route, static_file, run, template, redirect
 from bluetooth import discover_devices, BluetoothSocket, BluetoothError, RFCOMM
 
 
 PATH_ME = os.path.dirname(os.path.realpath(__file__))
 PATH_STATIC = os.path.join(PATH_ME, 'static')
 SOCK = None
+CONNECTED = False
+CONSOLE = 'BT Controller started\n'
 
 
 @route('/static/<filepath:path>')
@@ -24,40 +28,35 @@ def directional():
     return template('directional')
 
 
-@route('/functions/')
-def functions():
-    return template('functions')
-
-
 @route('/console/')
 def console():
-    return template('console')
+    global CONSOLE
+    rsp = CONSOLE
+    CONSOLE = ''
+    return rsp
 
 
 @route('/connect/<addr>/')
 def connect(addr):
-    global SOCK
+    global SOCK, CONSOLE, CONNECTED
 
-    response.content_type = 'application/json'
-
-    info = {}
-    info['devices'] = {}
-
-    for daddr, dname in discover_devices(lookup_names=True):
-        info[dname] = daddr
+    connected = 'Connected: {}'
 
     try:
         SOCK = BluetoothSocket(RFCOMM)
         SOCK.connect((addr, 1))
+        SOCK.settimeout(1)
     except BluetoothError as e:
-        print(e)
-        info['connected'] = False
+        CONSOLE += str(e) + '\n'
+        connected = connected.format('no')
         SOCK.close()
+        SOCK = None
     else:
-        info['connected'] = True
+        CONNECTED = True
+        connected = connected.format('yes')
 
-    print(info)
-    return dumps(info)
+    CONSOLE += connected + '\n'
+    return connected
 
 
 @route('/event/<name>/<arg>/')
@@ -93,15 +92,46 @@ def event(name, arg):
 
     msg = 'command: {}, {}'
 
-    if SOCK is None:
+    if CONNECTED:
         msg = msg.format(cmd, 'not connected')
         print(msg)
         return msg
     else:
         msg = msg.format(cmd, 'connected')
         print(msg)
-        SOCK.send(cmd)
+        SOCK.sendall(cmd)
         return msg
 
 
-run(host='0.0.0.0', port=8080, reloader=False, debug=True)
+def discover():
+    global CONSOLE
+
+    devices = 'Found devices:\n'
+
+    for daddr, dname in discover_devices(lookup_names=True):
+        devices += '  {}: {}\n'.format(daddr, dname)
+
+    CONSOLE += devices
+
+
+def read_console():
+    global CONSOLE
+
+    while 1:
+        print('ping')
+
+        if not CONNECTED:
+            sleep(1)
+        else:
+            try:
+                pkt = SOCK.recv(255)
+            except:
+                continue
+            else:
+                CONSOLE += pkt
+
+
+Thread(target=discover, daemon=True).start()
+Thread(target=read_console, daemon=True).start()
+
+run(host='0.0.0.0', port=8080, reloader=False, debug=False)

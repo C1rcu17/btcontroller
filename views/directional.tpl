@@ -25,8 +25,6 @@
 
     .absolute {
       position: absolute;
-      cursor: pointer;
-      cursor: hand;
     }
 
     .center-text {
@@ -34,14 +32,16 @@
       text-align: center;
     }
 
+    .cursor-hand {
+      cursor: pointer;
+      cursor: hand;
+    }
+
     .center-text > span {
       display: table-cell;
       vertical-align: middle;
     }
 
-    #updown    { left: 15px; top: 30px; bottom: 30px; width: 50px; }
-    #leftright { left: calc(100% - 250px); top: calc(100% - 172px); right: 15px; bottom: 30px; height: 50px; }
-    #connect   { left: calc(100% - 250px); top: calc(100% - 102px); right: 15px; bottom: 30px; height: 35px; }
     #kpp        { left: 150px; top: 30px; width: 35px; height: 35px; }
     #kip        { left: 200px; top: 30px; width: 35px; height: 35px; }
     #kdp        { left: 250px; top: 30px; width: 35px; height: 35px; }
@@ -52,6 +52,10 @@
     #spm        { left: 300px; top: 80px; width: 35px; height: 35px; }
     #agr        { left: 350px; top: 30px; width: 45px; height: 85px; }
 
+    #updown    { left: 15px; top: 30px; bottom: 30px; width: 50px; }
+    #leftright { left: calc(100% - 250px); top: calc(100% - 172px); right: 15px; height: 50px; }
+    #connect   { left: calc(100% - 250px); top: calc(100% - 102px); right: 15px; height: 35px; }
+    #console   { left: 80px; top: 135px; right: 265px; bottom: 30px; border: solid 1px #CCCCCC; white-space: pre; overflow: scroll; padding: 5px; }
   </style>
 %end
 
@@ -59,7 +63,7 @@
   <script>
     var sendEvent = function(name, arg) {
       $.get('/event/' + name + '/' + arg + '/', function(data) {
-        console.log(data);
+        // console.log(data);
       });
     };
 
@@ -118,9 +122,18 @@
 
       $('#connectBt').on('click', function(e) {
         $.get('/connect/' + $('#addr').val() + '/', function(data) {
-          console.log(data);
+          // console.log(data);
         });
       });
+
+      var console = $('#console');
+
+      setInterval(function() {
+        $.get('/console/', function(data) {
+          console.append(data);
+          console.scrollTop(console.prop('scrollHeight'));
+        });
+      }, 1000);
     });
 
     $(function() {
@@ -178,22 +191,22 @@
 
 %rebase('layouts/master.tpl', title='BT Controller')
 
-<div id="kpp" class="absolute center-text bt"><span>KP+</span></div>
-<div id="kip" class="absolute center-text bt"><span>KI+</span></div>
-<div id="kdp" class="absolute center-text bt"><span>KD+</span></div>
-<div id="spp" class="absolute center-text bt"><span>SP+</span></div>
-<div id="kpm" class="absolute center-text bt"><span>KP-</span></div>
-<div id="kim" class="absolute center-text bt"><span>KI-</span></div>
-<div id="kdm" class="absolute center-text bt"><span>KD-</span></div>
-<div id="spm" class="absolute center-text bt"><span>SP-</span></div>
-<div id="agr" class="absolute center-text toggle"><span>Agr</span></div>
+<div id="kpp" class="absolute center-text bt cursor-hand"><span>KP+</span></div>
+<div id="kip" class="absolute center-text bt cursor-hand"><span>KI+</span></div>
+<div id="kdp" class="absolute center-text bt cursor-hand"><span>KD+</span></div>
+<div id="spp" class="absolute center-text bt cursor-hand"><span>SP+</span></div>
+<div id="kpm" class="absolute center-text bt cursor-hand"><span>KP-</span></div>
+<div id="kim" class="absolute center-text bt cursor-hand"><span>KI-</span></div>
+<div id="kdm" class="absolute center-text bt cursor-hand"><span>KD-</span></div>
+<div id="spm" class="absolute center-text bt cursor-hand"><span>SP-</span></div>
+<div id="agr" class="absolute center-text toggle cursor-hand"><span>Agr</span></div>
 
-<div id="updown" class="absolute gauge"></div>
-<div id="leftright" class="absolute gauge"></div>
+<div id="updown" class="absolute gauge cursor-hand"></div>
+<div id="leftright" class="absolute gauge cursor-hand"></div>
 
 <div id="connect" class="absolute">
-  <input id="addr" style="width: 60%; height: 100%" type="text" value="98:D3:31:40:22:FF">
-  <button id="connectBt" style="width: 36%; height: 100%">Connect</button>
+  <input id="addr" style="width: 60%; height: 100%" type="text" value="24:DF:6A:D7:9D:3B">
+  <button id="connectBt" class="cursor-hand" style="width: 36%; height: 100%">Connect</button>
 </div>
 
-<textarea id="console"></textarea>
+<div id="console" class="absolute"></div>
