@@ -114,7 +114,6 @@ def discover():
     except OSError:
         pass
 
-    print(found)
     if isinstance(found, list):
         for daddr, dname in found:
             devices += '  {}: {}\n'.format(daddr, dname)
@@ -126,8 +125,6 @@ def read_console():
     global CONSOLE
 
     while 1:
-        print('ping')
-
         if not CONNECTED:
             sleep(1)
         else:
